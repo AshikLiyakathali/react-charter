@@ -13,11 +13,11 @@
 
 import React from 'react';
 import './App.css';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown';
 
 class App extends React.Component{
   state = {
+    fields: {},
+    customerID: "",
     Name: "",
     April: "",
     May: "",
@@ -25,38 +25,72 @@ class App extends React.Component{
     Total: ""
   }
 
-  handleClick = (input_cid) => {
-    if(input_cid === customers_id_list[input_cid-1]){
+  onChange = updatedValue => {
+    this.setState({
+      fields: {
+        ...this.state.fields,
+        ...updatedValue
+      }
+    });
+  };
+  
+  change = e => {
+    this.onChange({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  handleClick = (e) => {
+    e.preventDefault();
+    let input_cid = this.state.customerID;
+    if(customers_id_list.indexOf(parseInt(input_cid))!== -1){
       this.setState({
-        Name: uniq_cid[input_cid-1].cname,
-        April: calculate_rewards(customer_data.filter(customer => customer.cid === input_cid && customer.month === "April")),
-        May: calculate_rewards(customer_data.filter(customer => customer.cid === input_cid && customer.month === "May")),
-        June: calculate_rewards(customer_data.filter(customer => customer.cid === input_cid && customer.month === "June")),
-        Total: calculate_rewards(customer_data.filter(customer => customer.cid === input_cid))
-      })
+        Name: uniq_cid[parseInt(input_cid)-1].cname,
+        April: calculate_rewards(customer_data.filter(customer => customer.cid === parseInt(input_cid) && customer.month === "April")),
+        May: calculate_rewards(customer_data.filter(customer => customer.cid === parseInt(input_cid) && customer.month === "May")),
+        June: calculate_rewards(customer_data.filter(customer => customer.cid === parseInt(input_cid) && customer.month === "June")),
+        Total: calculate_rewards(customer_data.filter(customer => customer.cid === parseInt(input_cid)))
+      }); 
     }
-  }
+    else{
+      alert("Enter a valid Customer ID");
+    }
+  };
 
   render(){
-  return (
+   return (
     <div className="App">
       <div><h1>Customer Reward Points</h1></div>
         <div>
-          <DropdownButton id="dropdown-basic-button" title="Select Customer ID">
-            <Dropdown.Item onClick = {() => this.handleClick(customers_id_list[0])}>{customers_id_list[0]}</Dropdown.Item>
-            <Dropdown.Item onClick = {() => this.handleClick(customers_id_list[1])}>{customers_id_list[1]}</Dropdown.Item>
-            <Dropdown.Item onClick = {() => this.handleClick(customers_id_list[2])}>{customers_id_list[2]}</Dropdown.Item>
-            <Dropdown.Item onClick = {() => this.handleClick(customers_id_list[3])}>{customers_id_list[3]}</Dropdown.Item>
-          </DropdownButton>
+          <form> 
+            <input
+              name="customerID"
+              placeholder="Enter Customer ID"
+              value={this.state.customerID}
+              onChange={e => this.change(e)}
+              style={{
+                backgroundColor: "white",
+                height: 30,
+                width: 200,
+                margin: 5
+                }}
+              type= "number"
+            />
+           <br />
+           <button onClick={(e) => this.handleClick(e)}>Submit</button>
+          </form>
         </div>
-      <h2>Name: {this.state.Name}</h2>
-      <h2>April: {this.state.April}</h2>
-      <h2>May: {this.state.May}</h2>
-      <h2>June: {this.state.June}</h2>
-      <h2>Total: {this.state.Total}</h2>
+     <div>
+          <h4>Name: <span>{this.state.Name}</span></h4>
+          <h4>April: <span>{this.state.April}</span></h4>
+          <h4>May: <span>{this.state.May}</span></h4>
+          <h4>June: <span>{this.state.June}</span></h4>
+          <h4>Total: <span>{this.state.Total}</span></h4>
+     </div>
     </div>
-  );
-}
+   );
+  }
 }
 
 export default App;
