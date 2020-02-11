@@ -45,7 +45,7 @@ class App extends React.Component {
 
   handleClick = e => {
     e.preventDefault();
-    let input_cid = parseInt(this.state.customerID);
+    let input_cid = Number(this.state.customerID);
     if (input_cid === customers_id_list[input_cid - 1]) {
       this.setState({
         Name: uniq_cid[input_cid - 1].cname,
@@ -77,7 +77,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <div>
-          <h1>Customer Reward Points</h1>
+          <h1> Customer Reward Points </h1>
         </div>
         <div>
           <form>
@@ -95,24 +95,24 @@ class App extends React.Component {
               type="number"
             />
             <br />
-            <button onClick={e => this.handleClick(e)}>Submit</button>
+            <button onClick={e => this.handleClick(e)}> Submit </button>
           </form>
         </div>
         <div>
           <h4>
-            Name: <span>{this.state.Name}</span>
+            Name: <span> {this.state.Name} </span>
           </h4>
           <h4>
-            April: <span>{this.state.April}</span>
+            April: <span> {this.state.April} </span>
           </h4>
           <h4>
-            May: <span>{this.state.May}</span>
+            May: <span> {this.state.May} </span>
           </h4>
           <h4>
-            June: <span>{this.state.June}</span>
+            June: <span> {this.state.June} </span>
           </h4>
           <h4>
-            Total: <span>{this.state.Total}</span>
+            Total: <span> {this.state.Total} </span>
           </h4>
         </div>
       </div>
@@ -217,3 +217,5 @@ var customers_id_list = [];
 for (let i = 0; i < uniq_cid.length; i++) {
   customers_id_list.push(uniq_cid[i].cid);
 }
+
+// End of code
